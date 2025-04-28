@@ -1,10 +1,12 @@
 package com.maghreby.repository;
 
+import com.maghreby.model.ServiceProvider;
 import com.maghreby.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Repository
 public interface UserRepository extends MongoRepository<User, String> {
-    // You can add custom queries later if needed!
+    Optional<User> findByEmail(String email);
+
+    void save(ServiceProvider serviceProvider);
 }

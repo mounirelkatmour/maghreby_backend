@@ -15,17 +15,6 @@ public class ServiceProviderRequestController {
 
     private final ServiceProviderRequestService serviceProviderRequestService;
 
-    // Create a new service provider request (ServiceProvider will provide all info)
-    @PostMapping("/create")
-    public ResponseEntity<String> createRequest(@RequestBody ServiceProviderRequest request) {
-        ServiceProviderRequest createdRequest = serviceProviderRequestService.createRequest(request);
-        if (createdRequest != null) {
-            return ResponseEntity.ok("Request created successfully.");
-        } else {
-            return ResponseEntity.status(400).body("Failed to create request.");
-        }
-    }
-
     // Get all requests
     @GetMapping
     public List<ServiceProviderRequest> getAllRequests() {

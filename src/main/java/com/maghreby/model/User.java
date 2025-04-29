@@ -43,7 +43,10 @@ public abstract class User implements UserDetails {
     @Override 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
 
-    
+    private boolean active = true; // Add active status for user
+
+    private Role role; // Add role to base User class
+
     @Override 
     public String getUsername() { 
         return email;  

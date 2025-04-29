@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
@@ -32,17 +32,60 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Create a new AdminUser
-    @PostMapping("/admin")
-    public ResponseEntity<User> createAdminUser(@RequestBody AdminUser adminUser) {
-        User createdUser = userService.createUser(adminUser);
-        return ResponseEntity.ok(createdUser);
+    // Update user profile
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
+        User user = userService.updateUser(id, updatedUser);
+        return ResponseEntity.ok(user);
     }
 
-    // Create a new RegularUser
-    @PostMapping("/regular")
-    public ResponseEntity<User> createRegularUser(@RequestBody RegularUser regularUser) {
-        User createdUser = userService.createUser(regularUser);
-        return ResponseEntity.ok(createdUser);
+    // Delete user
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
+
+    // Change user role
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<User> changeUserRole(@PathVariable String id, @RequestBody Map<String, String> body) {
+        String newRole = body.get("role");
+        User user = userService.changeUserRole(id, newRole);
+        return ResponseEntity.ok(user);
+    }
+
+    // Change password (authenticated user)
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable String id, @RequestBody Map<String, String> body) {
+        String oldPassword = body.get("oldPassword");
+        String newPassword = body.get("newPassword");
+        boolean result = userService.changePassword(id, oldPassword, newPassword);
+        if (result) {
+            return ResponseEntity.ok(Map.of("message", "Password changed successfully."));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("message", "Old password is incorrect."));
+        }
+    }
+
+    // Get current authenticated user
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser() {
+        User user = userService.getCurrentUser();
+        return ResponseEntity.ok(user);
+    }
+
+    // Deactivate user
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<User> deactivateUser(@PathVariable String id) {
+        User user = userService.deactivateUser(id);
+        return ResponseEntity.ok(user);
+    }
+
+    // Activate user
+    @PatchMapping("/{id}/activate")
+    public ResponseEntity<User> activateUser(@PathVariable String id) {
+        User user = userService.activateUser(id);
+        return ResponseEntity.ok(user);
+    }
+
 }

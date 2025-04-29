@@ -19,27 +19,24 @@ public class AdminUser extends User {
     
     @Builder.Default
     private ServiceType service = ServiceType.NSP; // Admins aren't service providers
-    
-    private Role role; // Can be either ADMIN or SUPERADMIN
 
     public AdminUser() {
         super();
         this.service = ServiceType.NSP; // Ensure default value is set
-        this.role = Role.ADMIN; // Default role for AdminUser
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
     }
 
     // Admin-specific methods can be added here
     public boolean isSuperAdmin() {
-        return role == Role.SUPERADMIN;
+        return getRole() == Role.SUPERADMIN;
     }
 
     public void validateRole() {
-        if (role != Role.ADMIN && role != Role.SUPERADMIN) {
+        if (getRole() != Role.ADMIN && getRole() != Role.SUPERADMIN) {
             throw new IllegalArgumentException("AdminUser must have ADMIN or SUPERADMIN role");
         }
     }

@@ -22,17 +22,13 @@ public class RegularUser extends User {
     @Builder.Default
     private ServiceType service = ServiceType.NSP;
 
-    @Builder.Default
-    private Role role = Role.USER;
-
     public RegularUser() {
         super();
         this.service = ServiceType.NSP; // Ensure default value is set
-        this.role = Role.USER; // Default role for RegularUser
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
     }
 }

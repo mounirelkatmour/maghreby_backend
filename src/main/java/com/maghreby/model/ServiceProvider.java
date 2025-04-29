@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
+@SuppressWarnings("unused")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
@@ -22,16 +23,13 @@ public class ServiceProvider extends User {
     private boolean isApproved;
     private ServiceType service; // No default NSP. Service provider should have a real service type.
 
-    @Builder.Default
-    private Role role = Role.SERVICE_PROVIDER;
-
+    // Add explicit no-args constructor for ServiceProvider
     public ServiceProvider() {
         super();
-        this.role = Role.SERVICE_PROVIDER; // Default role for ServiceProvider
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+        return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
     }
 }

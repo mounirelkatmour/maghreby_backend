@@ -1,6 +1,5 @@
 package com.maghreby.repository;
 
-import com.maghreby.model.ServiceProvider;
 import com.maghreby.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;

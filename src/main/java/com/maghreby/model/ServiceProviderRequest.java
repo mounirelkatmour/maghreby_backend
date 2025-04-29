@@ -23,6 +23,7 @@ public class ServiceProviderRequest {
     private ServiceType serviceType; // Ensure this field is properly mapped
     private Date createdAt; // Ensure this field is properly mapped
     private RequestStatus status;
+    private LanguagePreference languagePreference;
 
     public enum RequestStatus {
         PENDING,

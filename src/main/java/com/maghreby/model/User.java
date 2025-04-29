@@ -43,8 +43,10 @@ public abstract class User implements UserDetails {
     @Override 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
 
+    
     @Override 
     public String getUsername() { 
         return email;  
     }
+    
 }

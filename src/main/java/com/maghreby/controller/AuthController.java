@@ -106,6 +106,7 @@ public class AuthController {
 
         return ResponseEntity.ok(AuthResponse.builder()
                 .token(jwtToken)
+                .user(user)
                 .build());
     }
 
@@ -152,5 +153,11 @@ public class AuthController {
         // Remove the used token
         passwordResetTokenRepository.deleteByEmail(resetToken.getEmail());
         return ResponseEntity.ok(Map.of("message", "Password has been reset successfully."));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout() {
+        // No server-side action needed for stateless JWT
+        return ResponseEntity.ok(Map.of("message", "Logged out successfully."));
     }
 }

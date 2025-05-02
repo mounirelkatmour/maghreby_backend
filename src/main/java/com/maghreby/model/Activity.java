@@ -14,4 +14,5 @@ import org.springframework.data.annotation.TypeAlias;
 @TypeAlias("Activity")
 public class Activity extends Service {
     private String duration;
+    private double price;
 }

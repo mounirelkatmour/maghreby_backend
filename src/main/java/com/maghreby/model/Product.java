@@ -19,4 +19,5 @@ public class Product extends Offer {
     private int stock;
     private String category;
     private String adminId;
+    private double price;
 }

@@ -20,6 +20,7 @@ public class Car extends Service {
     private Transmission transmission;
     private FuelType fuelType;
     private String licencePlate;
+    private double pricePerDay;
 
     public enum Transmission {
         MANUAL, AUTOMATIC

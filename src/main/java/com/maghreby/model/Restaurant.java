@@ -17,6 +17,7 @@ public class Restaurant extends Service {
     private String cuisineType;
     private String openingHours;
     private String closingHours;
+    private double minPrice;
     private List<MenuItem> menu;
 
     @Data

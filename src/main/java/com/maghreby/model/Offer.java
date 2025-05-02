@@ -18,7 +18,6 @@ public abstract class Offer {
     private String name;
     private String description;
     private List<String> images;
-    private double price;
     private boolean active;
     private Date createdAt;
     private Date updatedAt;

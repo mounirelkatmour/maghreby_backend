@@ -33,6 +33,6 @@ public class Accommodation extends Service {
     }
 
     public enum AccommodationType {
-        HOTEL, HOSTEL, VILLA, APARTMENT
+        HOTEL, HOSTEL, VILLA, APARTMENT, RIAD
     }
 }

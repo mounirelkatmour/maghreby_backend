@@ -21,4 +21,6 @@ public abstract class Offer {
     private boolean active;
     private Date createdAt;
     private Date updatedAt;
+    private int favorites = 0;
+    private double averageRating;
 }

@@ -2,6 +2,7 @@ package com.maghreby.controller;
 
 import com.maghreby.model.Accommodation;
 import com.maghreby.service.AccommodationService;
+import com.maghreby.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,22 @@ public class AccommodationController {
     @Autowired
     private AccommodationService accommodationService;
 
+    @Autowired
+    private FavoriteService favoriteService;
+
     @GetMapping
-    public List<Accommodation> getAllAccommodations() {
-        return accommodationService.getAllAccommodations();
+    public List<Accommodation> getAllAccommodations(@RequestParam(required = false) String userId) {
+        List<Accommodation> accommodations = accommodationService.getAllAccommodations();
+        if (userId != null) {
+            List<String> favoriteIds = favoriteService.getUserFavoritesByType(userId, "accommodations")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .toList();
+            for (Accommodation accommodation : accommodations) {
+                accommodation.setFavorite(favoriteIds.contains(accommodation.getId()));
+            }
+        }
+        return accommodations;
     }
 
     @GetMapping("/{id}")

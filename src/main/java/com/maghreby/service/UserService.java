@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 // @SuppressWarnings("unused")
@@ -75,6 +76,27 @@ public class UserService {
     public User activateUser(String id) {
         User user = userRepository.findById(id).orElseThrow();
         user.setActive(true);
+        return userRepository.save(user);
+    }
+
+    public User updateUserInterests(String id, Map<String, List<String>> interests) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setInterests(interests);
+        // If user is RegularUser, set firstTimeLogin to false after onboarding
+        if (user instanceof RegularUser) {
+            ((RegularUser) user).setFirstTimeLogin(false);
+        }
+        return userRepository.save(user);
+    }
+
+    public User updateUserLanguage(String id, String languageCode) {
+        User user = userRepository.findById(id).orElseThrow();
+        for (LanguagePreference lang : LanguagePreference.values()) {
+            if (lang.getCode().equals(languageCode)) {
+                user.setLanguagePreference(lang);
+                break;
+            }
+        }
         return userRepository.save(user);
     }
 }

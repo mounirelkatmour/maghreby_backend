@@ -2,6 +2,7 @@ package com.maghreby.controller;
 
 import com.maghreby.model.Restaurant;
 import com.maghreby.service.RestaurantService;
+import com.maghreby.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,22 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private FavoriteService favoriteService;
+
     @GetMapping
-    public List<Restaurant> getAllRestaurants() {
-        return restaurantService.getAllRestaurants();
+    public List<Restaurant> getAllRestaurants(@RequestParam(required = false) String userId) {
+        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+        if (userId != null) {
+            List<String> favoriteIds = favoriteService.getUserFavoritesByType(userId, "restaurants")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .toList();
+            for (Restaurant restaurant : restaurants) {
+                restaurant.setFavorite(favoriteIds.contains(restaurant.getId()));
+            }
+        }
+        return restaurants;
     }
 
     @GetMapping("/{id}")

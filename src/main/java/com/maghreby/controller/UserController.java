@@ -74,6 +74,13 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // Update user interests
+    @PostMapping("/{id}/interests")
+    public ResponseEntity<User> updateUserInterests(@PathVariable String id, @RequestBody Map<String, List<String>> interests) {
+        User user = userService.updateUserInterests(id, interests);
+        return ResponseEntity.ok(user);
+    }
+
     // Deactivate user
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<User> deactivateUser(@PathVariable String id) {
@@ -86,6 +93,14 @@ public class UserController {
     public ResponseEntity<User> activateUser(@PathVariable String id) {
         User user = userService.activateUser(id);
         return ResponseEntity.ok(user);
+    }
+
+    // Update user language
+    @PutMapping("/{id}/language")
+    public ResponseEntity<?> updateLanguage(@PathVariable String id, @RequestBody Map<String, String> body) {
+        String languageCode = body.get("language");
+        User updated = userService.updateUserLanguage(id, languageCode);
+        return ResponseEntity.ok(updated);
     }
 
 }

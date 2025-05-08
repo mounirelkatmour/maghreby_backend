@@ -2,6 +2,7 @@ package com.maghreby.controller;
 
 import com.maghreby.model.Car;
 import com.maghreby.service.CarService;
+import com.maghreby.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,22 @@ public class CarController {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private FavoriteService favoriteService;
+
     @GetMapping
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
+    public List<Car> getAllCars(@RequestParam(required = false) String userId) {
+        List<Car> cars = carService.getAllCars();
+        if (userId != null) {
+            List<String> favoriteIds = favoriteService.getUserFavoritesByType(userId, "cars")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .toList();
+            for (Car car : cars) {
+                car.setFavorite(favoriteIds.contains(car.getId()));
+            }
+        }
+        return cars;
     }
 
     @GetMapping("/{id}")

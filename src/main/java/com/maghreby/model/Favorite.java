@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import java.util.Date;
 
 @Data
+@SuppressWarnings("unused")
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor

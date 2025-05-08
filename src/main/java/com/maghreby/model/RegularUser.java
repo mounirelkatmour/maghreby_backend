@@ -22,13 +22,25 @@ public class RegularUser extends User {
     @Builder.Default
     private ServiceType service = ServiceType.NSP;
 
+    @Builder.Default
+    private boolean firstTimeLogin = true;
+
     public RegularUser() {
         super();
         this.service = ServiceType.NSP; // Ensure default value is set
+        this.firstTimeLogin = true; // Ensure default value is set
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(getRole().name()));
+    }
+
+    public boolean isFirstTimeLogin() {
+        return firstTimeLogin;
+    }
+
+    public void setFirstTimeLogin(boolean firstTimeLogin) {
+        this.firstTimeLogin = firstTimeLogin;
     }
 }

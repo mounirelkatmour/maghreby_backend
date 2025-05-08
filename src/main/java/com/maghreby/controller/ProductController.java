@@ -2,6 +2,8 @@ package com.maghreby.controller;
 
 import com.maghreby.model.Product;
 import com.maghreby.service.ProductService;
+import com.maghreby.service.FavoriteService;
+import com.maghreby.model.Favorite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,22 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private FavoriteService favoriteService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<Product> getAllProducts(@RequestParam(required = false) String userId) {
+        List<Product> products = productService.getAllProducts();
+        if (userId != null) {
+            List<String> favoriteIds = favoriteService.getUserFavoritesByType(userId, "products")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .toList();
+            for (Product product : products) {
+                product.setFavorite(favoriteIds.contains(product.getId()));
+            }
+        }
+        return products;
     }
 
     @GetMapping("/{id}")

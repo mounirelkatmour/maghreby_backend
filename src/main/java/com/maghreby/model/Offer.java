@@ -3,7 +3,9 @@ package com.maghreby.model;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
 
@@ -23,4 +25,8 @@ public abstract class Offer {
     private Date updatedAt;
     private int favorites = 0;
     private double averageRating;
+
+    @JsonProperty("isFavorite")
+    @Transient
+    private boolean isFavorite;
 }

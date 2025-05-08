@@ -2,6 +2,7 @@ package com.maghreby.controller;
 
 import com.maghreby.model.Activity;
 import com.maghreby.service.ActivityService;
+import com.maghreby.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,22 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private FavoriteService favoriteService;
+
     @GetMapping
-    public List<Activity> getAllActivities() {
-        return activityService.getAllActivities();
+    public List<Activity> getAllActivities(@RequestParam(required = false) String userId) {
+        List<Activity> activities = activityService.getAllActivities();
+        if (userId != null) {
+            List<String> favoriteIds = favoriteService.getUserFavoritesByType(userId, "activities")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .toList();
+            for (Activity activity : activities) {
+                activity.setFavorite(favoriteIds.contains(activity.getId()));
+            }
+        }
+        return activities;
     }
 
     @GetMapping("/{id}")

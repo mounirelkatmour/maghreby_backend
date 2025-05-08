@@ -68,6 +68,7 @@ public class AuthController {
                 .languagePreference(request.getLanguagePreference())
                 .service(ServiceType.NSP)
                 .role(Role.USER)
+                .firstTimeLogin(true)
                 .build();
             userRepository.save(user);
             // Return JSON message

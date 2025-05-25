@@ -1,5 +1,6 @@
 package com.maghreby.service;
 
+import com.maghreby.dto.UserUpdateDTO;
 import com.maghreby.model.*;
 import com.maghreby.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +28,38 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByAuth0Id(String auth0Id) {
+        return userRepository.findByAuth0Id(auth0Id);
+    }
+
     public User createUser(User user) {
         return userRepository.save(user); // Assuming you have a userRepository that extends MongoRepository<User, String>
     }
 
-    public User updateUser(String id, User updatedUser) {
-        User user = userRepository.findById(id).orElseThrow();
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setPhoneNumber(updatedUser.getPhoneNumber());
-        user.setCountry(updatedUser.getCountry());
-        user.setLanguagePreference(updatedUser.getLanguagePreference());
-        user.setProfilImg(updatedUser.getProfilImg());
-        return userRepository.save(user);
+    public User updateUser(String id, UserUpdateDTO updates) {
+        User existingUser = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (updates.getFirstName() != null) existingUser.setFirstName(updates.getFirstName());
+        if (updates.getLastName() != null) existingUser.setLastName(updates.getLastName());
+        if (updates.getBio() != null) existingUser.setBio(updates.getBio());
+        if (updates.getBirthDate() != null) {
+            // If birthDate is a String, parse to Date
+            if (updates.getBirthDate() instanceof String) {
+                try {
+                    existingUser.setBirthDate(java.sql.Date.valueOf(updates.getBirthDate()));
+                } catch (Exception e) {
+                    // handle parse error or ignore
+                }
+            }
+        }
+        if (updates.getCity() != null) existingUser.setCity(updates.getCity());
+        if (updates.getCountry() != null) existingUser.setCountry(updates.getCountry());
+        if (updates.getPhoneNumber() != null) existingUser.setPhoneNumber(updates.getPhoneNumber());
+        if (updates.getOccupation() != null) existingUser.setOccupation(updates.getOccupation());
+        if (updates.getEmail() != null) existingUser.setEmail(updates.getEmail());
+
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(String id) {

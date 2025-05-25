@@ -37,6 +37,7 @@ public abstract class User implements UserDetails {
     private String occupation;
     private Date birthDate;
     private String bio;
+    private String auth0Id; // Store Auth0 user ID
     
     @Builder.Default
     private LanguagePreference languagePreference = LanguagePreference.ENGLISH;

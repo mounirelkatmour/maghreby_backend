@@ -34,29 +34,27 @@ public class FavoriteService {
         return favoriteRepository.save(favorite);
     }
 
-    public void removeFavorite(String userId, String offerId) {
+    public boolean removeFavorite(String userId, String offerId) {
         if (!favoriteRepository.existsByUserIdAndOfferId(userId, offerId)) {
-            throw new RuntimeException("This item is not in your favorites");
+            // Idempotent: nothing to remove, return false
+            return false;
         }
-        
         // Decrement favorites count
         updateFavoritesCount(offerId, -1);
-        
         // Get the favorite before deleting to set updatedAt
         Favorite favorite = favoriteRepository.findByUserIdAndOfferId(userId, offerId)
-                .orElseThrow(() -> new RuntimeException("Favorite not found"));
-        
-        favorite.setUpdatedAt(new java.util.Date());
-        favoriteRepository.save(favorite);
-        
+                .orElse(null);
+        if (favorite != null) {
+            favorite.setUpdatedAt(new java.util.Date());
+            favoriteRepository.save(favorite);
+        }
         favoriteRepository.deleteByUserIdAndOfferId(userId, offerId);
+        return true;
     }
 
     private void updateFavoritesCount(String offerId, int increment) {
         offerService.updateFavoritesCount(offerId, increment);
     }
-
-
 
     public List<Favorite> getUserFavorites(String userId) {
         return favoriteRepository.findByUserId(userId);

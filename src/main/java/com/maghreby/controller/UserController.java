@@ -1,5 +1,6 @@
 package com.maghreby.controller;
 
+import com.maghreby.dto.UserUpdateDTO;
 import com.maghreby.model.*;
 import com.maghreby.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +32,19 @@ public class UserController {
         Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    // Get a user by their auth sub
+    @GetMapping("/auth0/{auth0Id}")
+    public ResponseEntity<User> findByAuth0Id(@PathVariable String auth0Id) {
+        Optional<User> user = userService.findByAuth0Id(auth0Id);
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     // Update user profile
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
-        return ResponseEntity.ok(user);
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UserUpdateDTO userUpdates) {
+        User updatedUser = userService.updateUser(id, userUpdates);
+        return ResponseEntity.ok(updatedUser);
     }
 
     // Delete user
@@ -75,7 +83,7 @@ public class UserController {
     }
 
     // Update user interests
-    @PostMapping("/{id}/interests")
+    @PutMapping("/{id}/interests")
     public ResponseEntity<User> updateUserInterests(@PathVariable String id, @RequestBody Map<String, List<String>> interests) {
         User user = userService.updateUserInterests(id, interests);
         return ResponseEntity.ok(user);

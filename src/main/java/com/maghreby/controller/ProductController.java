@@ -3,7 +3,6 @@ package com.maghreby.controller;
 import com.maghreby.model.Product;
 import com.maghreby.service.ProductService;
 import com.maghreby.service.FavoriteService;
-import com.maghreby.model.Favorite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

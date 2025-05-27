@@ -35,10 +35,27 @@ public class AccommodationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Accommodation> getAccommodationById(@PathVariable String id) {
-        Optional<Accommodation> accommodation = accommodationService.getAccommodationById(id);
-        return accommodation.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Accommodation> getAccommodationById(
+        @PathVariable String id,
+        @RequestParam(required = false) String userId) {
+
+        Optional<Accommodation> accommodationOpt = accommodationService.getAccommodationById(id);
+
+        if (accommodationOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Accommodation accommodation = accommodationOpt.get();
+
+        if (userId != null) {
+            boolean isFavorite = favoriteService.getUserFavoritesByType(userId, "accommodations")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .anyMatch(favId -> favId.equals(accommodation.getId()));
+            accommodation.setFavorite(isFavorite);
+        }
+
+        return ResponseEntity.ok(accommodation);
     }
 
     @PostMapping

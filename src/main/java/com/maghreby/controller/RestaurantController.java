@@ -35,10 +35,21 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable String id) {
-        Optional<Restaurant> restaurant = restaurantService.getRestaurantById(id);
-        return restaurant.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable String id,
+                                                        @RequestParam(required = false) String userId) {
+        Optional<Restaurant> restaurantOpt = restaurantService.getRestaurantById(id);
+        if (restaurantOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Restaurant restaurant = restaurantOpt.get();
+        if (userId != null) {
+            boolean isFavorite = favoriteService.getUserFavoritesByType(userId, "restaurants")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .anyMatch(favId -> favId.equals(restaurant.getId()));
+            restaurant.setFavorite(isFavorite);
+        }
+        return ResponseEntity.ok(restaurant);
     }
 
     @PostMapping

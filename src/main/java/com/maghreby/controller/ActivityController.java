@@ -35,10 +35,21 @@ public class ActivityController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Activity> getActivityById(@PathVariable String id) {
-        Optional<Activity> activity = activityService.getActivityById(id);
-        return activity.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Activity> getActivityById(@PathVariable String id,
+                                                    @RequestParam(required = false) String userId) {
+        Optional<Activity> activityOpt = activityService.getActivityById(id);
+        if (activityOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Activity activity = activityOpt.get();
+        if (userId != null) {
+            boolean isFavorite = favoriteService.getUserFavoritesByType(userId, "activities")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .anyMatch(favId -> favId.equals(activity.getId()));
+            activity.setFavorite(isFavorite);
+        }
+        return ResponseEntity.ok(activity);
     }
 
     @PostMapping

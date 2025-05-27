@@ -35,10 +35,21 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable String id) {
-        Optional<Car> car = carService.getCarById(id);
-        return car.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Car> getCarById(@PathVariable String id,
+                                        @RequestParam(required = false) String userId) {
+        Optional<Car> carOpt = carService.getCarById(id);
+        if (carOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Car car = carOpt.get();
+        if (userId != null) {
+            boolean isFavorite = favoriteService.getUserFavoritesByType(userId, "cars")
+                .stream()
+                .map(fav -> fav.getOfferId())
+                .anyMatch(favId -> favId.equals(car.getId()));
+            car.setFavorite(isFavorite);
+        }
+        return ResponseEntity.ok(car);
     }
 
     @PostMapping

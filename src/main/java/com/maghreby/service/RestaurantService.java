@@ -32,8 +32,24 @@ public class RestaurantService {
 
     public Optional<Restaurant> updateRestaurant(String id, Restaurant updatedRestaurant) {
         return getRestaurantById(id).map(existing -> {
-            updatedRestaurant.setId(id);
-            return offerRepository.save(updatedRestaurant);
+            // Restaurant-specific fields
+            if (updatedRestaurant.getCuisineType() != null) existing.setCuisineType(updatedRestaurant.getCuisineType());
+            if (updatedRestaurant.getOpeningHours() != null) existing.setOpeningHours(updatedRestaurant.getOpeningHours());
+            if (updatedRestaurant.getClosingHours() != null) existing.setClosingHours(updatedRestaurant.getClosingHours());
+            if (updatedRestaurant.getMinPrice() != 0) existing.setMinPrice(updatedRestaurant.getMinPrice());
+            if (updatedRestaurant.getMenu() != null) existing.setMenu(updatedRestaurant.getMenu());
+            // Service fields
+            if (updatedRestaurant.getLocation() != null) existing.setLocation(updatedRestaurant.getLocation());
+            if (updatedRestaurant.getServiceProviderId() != null) existing.setServiceProviderId(updatedRestaurant.getServiceProviderId());
+            // Offer fields
+            if (updatedRestaurant.getName() != null) existing.setName(updatedRestaurant.getName());
+            if (updatedRestaurant.getDescription() != null) existing.setDescription(updatedRestaurant.getDescription());
+            if (updatedRestaurant.getImages() != null) existing.setImages(updatedRestaurant.getImages());
+            if (updatedRestaurant.getCreatedAt() != null) existing.setCreatedAt(updatedRestaurant.getCreatedAt());
+            if (updatedRestaurant.getUpdatedAt() != null) existing.setUpdatedAt(updatedRestaurant.getUpdatedAt());
+            existing.setFavorites(updatedRestaurant.getFavorites());
+            existing.setAverageRating(updatedRestaurant.getAverageRating());
+            return offerRepository.save(existing);
         });
     }
 

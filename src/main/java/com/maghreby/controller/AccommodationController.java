@@ -63,7 +63,7 @@ public class AccommodationController {
         return accommodationService.createAccommodation(accommodation);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Accommodation> updateAccommodation(@PathVariable String id, @RequestBody Accommodation accommodation) {
         Optional<Accommodation> updated = accommodationService.updateAccommodation(id, accommodation);
         return updated.map(ResponseEntity::ok)

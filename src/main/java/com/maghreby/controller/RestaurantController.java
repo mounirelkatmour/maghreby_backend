@@ -57,7 +57,7 @@ public class RestaurantController {
         return restaurantService.createRestaurant(restaurant);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Restaurant> updateRestaurant(@PathVariable String id, @RequestBody Restaurant restaurant) {
         Optional<Restaurant> updated = restaurantService.updateRestaurant(id, restaurant);
         return updated.map(ResponseEntity::ok)

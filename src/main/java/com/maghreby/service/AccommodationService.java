@@ -32,8 +32,23 @@ public class AccommodationService {
 
     public Optional<Accommodation> updateAccommodation(String id, Accommodation updatedAccommodation) {
         return getAccommodationById(id).map(existing -> {
-            updatedAccommodation.setId(id);
-            return offerRepository.save(updatedAccommodation);
+            // Accommodation-specific fields
+            if (updatedAccommodation.getStars() != 0) existing.setStars(updatedAccommodation.getStars());
+            if (updatedAccommodation.getType() != null) existing.setType(updatedAccommodation.getType());
+            if (updatedAccommodation.getAmenities() != null) existing.setAmenities(updatedAccommodation.getAmenities());
+            if (updatedAccommodation.getRooms() != null) existing.setRooms(updatedAccommodation.getRooms());
+            // Service fields
+            if (updatedAccommodation.getLocation() != null) existing.setLocation(updatedAccommodation.getLocation());
+            if (updatedAccommodation.getServiceProviderId() != null) existing.setServiceProviderId(updatedAccommodation.getServiceProviderId());
+            // Offer fields
+            if (updatedAccommodation.getName() != null) existing.setName(updatedAccommodation.getName());
+            if (updatedAccommodation.getDescription() != null) existing.setDescription(updatedAccommodation.getDescription());
+            if (updatedAccommodation.getImages() != null) existing.setImages(updatedAccommodation.getImages());
+            if (updatedAccommodation.getCreatedAt() != null) existing.setCreatedAt(updatedAccommodation.getCreatedAt());
+            if (updatedAccommodation.getUpdatedAt() != null) existing.setUpdatedAt(updatedAccommodation.getUpdatedAt());
+            existing.setFavorites(updatedAccommodation.getFavorites());
+            existing.setAverageRating(updatedAccommodation.getAverageRating());
+            return offerRepository.save(existing);
         });
     }
 

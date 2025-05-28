@@ -57,7 +57,7 @@ public class CarController {
         return carService.createCar(car);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Car> updateCar(@PathVariable String id, @RequestBody Car car) {
         Optional<Car> updated = carService.updateCar(id, car);
         return updated.map(ResponseEntity::ok)

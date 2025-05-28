@@ -32,8 +32,21 @@ public class ActivityService {
 
     public Optional<Activity> updateActivity(String id, Activity updatedActivity) {
         return getActivityById(id).map(existing -> {
-            updatedActivity.setId(id);
-            return offerRepository.save(updatedActivity);
+            // Activity-specific fields
+            if (updatedActivity.getDuration() != null) existing.setDuration(updatedActivity.getDuration());
+            if (updatedActivity.getPrice() != 0) existing.setPrice(updatedActivity.getPrice());
+            // Service fields
+            if (updatedActivity.getLocation() != null) existing.setLocation(updatedActivity.getLocation());
+            if (updatedActivity.getServiceProviderId() != null) existing.setServiceProviderId(updatedActivity.getServiceProviderId());
+            // Offer fields
+            if (updatedActivity.getName() != null) existing.setName(updatedActivity.getName());
+            if (updatedActivity.getDescription() != null) existing.setDescription(updatedActivity.getDescription());
+            if (updatedActivity.getImages() != null) existing.setImages(updatedActivity.getImages());
+            if (updatedActivity.getCreatedAt() != null) existing.setCreatedAt(updatedActivity.getCreatedAt());
+            if (updatedActivity.getUpdatedAt() != null) existing.setUpdatedAt(updatedActivity.getUpdatedAt());
+            existing.setFavorites(updatedActivity.getFavorites());
+            existing.setAverageRating(updatedActivity.getAverageRating());
+            return offerRepository.save(existing);
         });
     }
 

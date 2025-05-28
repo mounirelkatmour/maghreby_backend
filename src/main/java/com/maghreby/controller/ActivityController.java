@@ -57,7 +57,7 @@ public class ActivityController {
         return activityService.createActivity(activity);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Activity> updateActivity(@PathVariable String id, @RequestBody Activity activity) {
         Optional<Activity> updated = activityService.updateActivity(id, activity);
         return updated.map(ResponseEntity::ok)

@@ -21,6 +21,11 @@ public class Accommodation extends Service {
     private List<String> amenities;
     private List<Room> rooms;
 
+    @Override
+    public String getOfferType() {
+        return "accommodations";
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

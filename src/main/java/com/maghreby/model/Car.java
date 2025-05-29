@@ -29,4 +29,9 @@ public class Car extends Service {
     public enum FuelType {
         DIESEL, GASOLINE, HYBRID, ELECTRIC
     }
+
+    @Override
+    public String getOfferType() {
+        return "cars";
+    }
 }

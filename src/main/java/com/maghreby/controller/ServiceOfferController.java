@@ -1,5 +1,6 @@
 package com.maghreby.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.maghreby.model.Service;
 import com.maghreby.service.ServiceOfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,14 @@ public class ServiceOfferController {
     @GetMapping
     public List<Service> getAllServices() {
         return serviceOfferService.getAllServices();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Service> getServiceById(@PathVariable String id) {
+        Optional<Service> serviceOpt = serviceOfferService.getServiceById(id);
+        if (serviceOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(serviceOpt.get());
     }
 }

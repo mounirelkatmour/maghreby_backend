@@ -12,6 +12,10 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
+
     public Review createReview(Review review) {
         review.setCreatedAt(new java.util.Date());
         return reviewRepository.save(review);

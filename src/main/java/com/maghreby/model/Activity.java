@@ -15,4 +15,9 @@ import org.springframework.data.annotation.TypeAlias;
 public class Activity extends Service {
     private String duration;
     private double price;
+
+    @Override
+    public String getOfferType() {
+        return "activities";
+    }
 }

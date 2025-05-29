@@ -29,4 +29,9 @@ public class Restaurant extends Service {
         private String description;
         private double price;
     }
+
+    @Override
+    public String getOfferType() {
+        return "restaurants";
+    }
 }

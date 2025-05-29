@@ -59,12 +59,17 @@ public class AuthController {
         if ("NSP".equalsIgnoreCase(service)) {
             // Register as RegularUser
             var user = RegularUser.builder()
+                .profilImg(request.getProfilImg())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(email)
                 .password(encodedPassword)
                 .phoneNumber(request.getPhoneNumber())
                 .country(request.getCountry())
+                .city(request.getCity())
+                .bio(request.getBio())
+                .birthDate(request.getBirthDate())
+                .occupation(request.getOccupation())
                 .languagePreference(request.getLanguagePreference())
                 .service(ServiceType.NSP)
                 .role(Role.USER)

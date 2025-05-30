@@ -16,10 +16,10 @@ public class UserSyncController {
     private final UserRepository userRepository;
 
     @PostMapping("/sync")
-    public RegularUser syncUser(@RequestBody Auth0UserDTO auth0User) {
+    public Object syncUser(@RequestBody Auth0UserDTO auth0User) {
         System.out.println("Syncing user: " + auth0User.getEmail());
 
-        return (RegularUser) userRepository.findByAuth0Id(auth0User.getSub())
+        return userRepository.findByAuth0Id(auth0User.getSub())
             .orElseGet(() -> userRepository.findByEmail(auth0User.getEmail()).orElseGet(() -> {
                 RegularUser user = RegularUser.builder()
                     .auth0Id(auth0User.getSub())

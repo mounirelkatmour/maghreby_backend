@@ -22,12 +22,12 @@ public class ServiceProviderRequest {
     private String country;
     private String city;
     private String bio;
-    private Date birthDate; // Ensure this field is properly mapped
+    private Date birthDate;
     private String occupation;
-    private String profilImg; // Ensure this field is properly mapped
-    private String auth0Id; // Ensure this field is properly mapped
-    private ServiceType serviceType; // Ensure this field is properly mapped
-    private Date createdAt; // Ensure this field is properly mapped
+    private String profilImg;
+    private String auth0Id;
+    private ServiceType serviceType;
+    private Date createdAt;
     private RequestStatus status;
     private LanguagePreference languagePreference;
 

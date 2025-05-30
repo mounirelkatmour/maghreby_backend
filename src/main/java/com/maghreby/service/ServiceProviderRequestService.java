@@ -49,8 +49,12 @@ public class ServiceProviderRequestService {
             serviceProvider.setPhoneNumber(request.getPhoneNumber());
             serviceProvider.setCountry(request.getCountry());
             serviceProvider.setService(request.getServiceType());
-            System.out.println("Service Type: " + request.getServiceType());
-            serviceProvider.setProfilImg("D:\\ELKATMOUR MOUNIR\\Stage 2eme annee\\Assets\\DEFAULT_USER_IMG.jpg"); // Default profile image path
+            serviceProvider.setCity(request.getCity());
+            serviceProvider.setBio(request.getBio());
+            serviceProvider.setBirthDate(request.getBirthDate());
+            serviceProvider.setOccupation(request.getOccupation());
+            serviceProvider.setProfilImg(request.getProfilImg() != null && !request.getProfilImg().isEmpty() ? request.getProfilImg() : "D:\\ELKATMOUR MOUNIR\\Stage 2eme annee\\Assets\\DEFAULT_USER_IMG.jpg");
+            serviceProvider.setLanguagePreference(request.getLanguagePreference());
             serviceProvider.setRole(Role.SERVICE_PROVIDER);  // Assign the SERVICE_PROVIDER role
             serviceProvider.setApproved(true);  // Mark the account as approved
 

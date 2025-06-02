@@ -47,6 +47,7 @@ public class RestaurantService {
             if (updatedRestaurant.getImages() != null) existing.setImages(updatedRestaurant.getImages());
             if (updatedRestaurant.getCreatedAt() != null) existing.setCreatedAt(updatedRestaurant.getCreatedAt());
             if (updatedRestaurant.getUpdatedAt() != null) existing.setUpdatedAt(updatedRestaurant.getUpdatedAt());
+            if (updatedRestaurant.isActive() != existing.isActive()) existing.setActive(updatedRestaurant.isActive());
             existing.setFavorites(updatedRestaurant.getFavorites());
             existing.setAverageRating(updatedRestaurant.getAverageRating());
             return offerRepository.save(existing);

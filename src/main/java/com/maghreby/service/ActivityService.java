@@ -44,6 +44,7 @@ public class ActivityService {
             if (updatedActivity.getImages() != null) existing.setImages(updatedActivity.getImages());
             if (updatedActivity.getCreatedAt() != null) existing.setCreatedAt(updatedActivity.getCreatedAt());
             if (updatedActivity.getUpdatedAt() != null) existing.setUpdatedAt(updatedActivity.getUpdatedAt());
+            if (updatedActivity.isActive() != existing.isActive()) existing.setActive(updatedActivity.isActive());
             existing.setFavorites(updatedActivity.getFavorites());
             existing.setAverageRating(updatedActivity.getAverageRating());
             return offerRepository.save(existing);

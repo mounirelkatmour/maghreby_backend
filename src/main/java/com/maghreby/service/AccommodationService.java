@@ -46,6 +46,7 @@ public class AccommodationService {
             if (updatedAccommodation.getImages() != null) existing.setImages(updatedAccommodation.getImages());
             if (updatedAccommodation.getCreatedAt() != null) existing.setCreatedAt(updatedAccommodation.getCreatedAt());
             if (updatedAccommodation.getUpdatedAt() != null) existing.setUpdatedAt(updatedAccommodation.getUpdatedAt());
+            if (updatedAccommodation.isActive() != existing.isActive()) existing.setActive(updatedAccommodation.isActive());
             existing.setFavorites(updatedAccommodation.getFavorites());
             existing.setAverageRating(updatedAccommodation.getAverageRating());
             return offerRepository.save(existing);

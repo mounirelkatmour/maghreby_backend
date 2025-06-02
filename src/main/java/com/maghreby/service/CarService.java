@@ -50,6 +50,11 @@ public class CarService {
             if (updatedCar.getImages() != null) existing.setImages(updatedCar.getImages());
             if (updatedCar.getCreatedAt() != null) existing.setCreatedAt(updatedCar.getCreatedAt());
             if (updatedCar.getUpdatedAt() != null) existing.setUpdatedAt(updatedCar.getUpdatedAt());
+            // Update 'active' field if present (handle primitive boolean)
+            // If you want PATCH to allow toggling, you should use Boolean (object) instead of boolean (primitive) in Offer.java
+            // But since Lombok generates getActive(), we can use it directly
+            // Only update if the value is different
+            if (updatedCar.isActive() != existing.isActive()) existing.setActive(updatedCar.isActive());
             // For favorites and averageRating, allow 0 as a valid value, so always set
             existing.setFavorites(updatedCar.getFavorites());
             existing.setAverageRating(updatedCar.getAverageRating());

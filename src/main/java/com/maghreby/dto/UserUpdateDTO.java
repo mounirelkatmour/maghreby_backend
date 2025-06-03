@@ -17,5 +17,6 @@ public class UserUpdateDTO {
     private String phoneNumber;
     private String occupation;
     private String email;
+    private String password;
     private String profilImg;
 }

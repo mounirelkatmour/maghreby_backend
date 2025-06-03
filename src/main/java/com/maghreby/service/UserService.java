@@ -58,6 +58,9 @@ public class UserService {
         if (updates.getPhoneNumber() != null) existingUser.setPhoneNumber(updates.getPhoneNumber());
         if (updates.getOccupation() != null) existingUser.setOccupation(updates.getOccupation());
         if (updates.getEmail() != null) existingUser.setEmail(updates.getEmail());
+        if (updates.getPassword() != null) {
+            existingUser.setPassword(passwordEncoder.encode(updates.getPassword()));
+        }
         if (updates.getProfilImg() != null) existingUser.setProfilImg(updates.getProfilImg());
 
         return userRepository.save(existingUser);
